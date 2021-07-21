@@ -47,18 +47,18 @@ userSchema.pre('save', function(next) {
                 if(err) return next(err)
                 user.password = hash
                 next()
-            });
-        });
+            })
+        })
     } else {
         next()
     }
 });
 
-userSchema.method.comparePassword = function(plainPassword, cb) {
+userSchema.methods.comparePassword = function(plainPassword, cb) {
     // plainPassword를 암호화하여 데이터베이스에 있는 비밀번호 일치여부를 확인
     bcrypt.compare(plainPassword, this.password, function(err, isMatch) {
-        if(err) return cb(err),
-            cb(null, isMatch)
+        if(err) return cb(err);
+        cb(null, isMatch);
     })
 }
 
@@ -72,6 +72,21 @@ userSchema.methods.generateToken = function(cb) {
         if(err) return cb(err)
         cb(null, user)
     })
+}
+
+userSchema.statics.findByToken = function(token, cb) {
+    var user = this;
+
+    // 토큰을 복호화(decode)한다.
+    jwt.verify(token, 'secretToken', function(err, decoded) {
+        // 유저 아이디를 이용해서 유저를 찾은 다음에 클라이언트에서 가져온 토큰과 DB에 보관된 토큰의 일치여부확인
+        user.findOne({ "_id": decoded, "token": token}, function (err, user) {
+            if(err) return cb(err);
+            cb(null, user);
+        })
+    })
+
+
 }
 
 // 스키마를 User라는 모델에 넣는다
