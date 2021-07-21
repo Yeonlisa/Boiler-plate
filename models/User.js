@@ -35,4 +35,5 @@ const userSchema = mongoose.Schema({
 // 스키마를 User라는 모델에 넣는다
 const User = mongoose.model('User', userSchema)
 
-module.exports = { User } // 다른 파일에서도 쓸 수 있게 export를 해준다
+// 다른 파일에서도 쓸 수 있게 export를 해준다
+module.exports = { User }
