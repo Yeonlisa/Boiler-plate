@@ -4,7 +4,5 @@
 ## MERN Stack?
 > MongoDB Express React Nodejs
 
-## 학습자료
-BoilerPlate Korean.html
 ## 실행방법
 root directory에서 ```npm run dev``` 실행하면 서버와 클라이언트 동시에 실행된다. 
